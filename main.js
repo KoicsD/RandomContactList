@@ -7,27 +7,30 @@
 
     var headForm;
     var numberInput;
+    var sortingInput;
     var submitButton;
 
     function onLoad(event) {
         headForm = document.querySelector('#head-form');
-        numberInput = document.querySelector('#head-form input[type="number"]');
+        numberInput = document.querySelector('#inpAmount');
+        sortingInput = document.querySelector('#selSorting');
         submitButton = document.querySelector('#head-form input[type="submit"]');
         headForm.addEventListener('submit', onSubmit);
         onSubmit(event);
     }
 
     function onSubmit(event) {
-        var number = parseInt(numberInput.value);
-        if (isNaN(number) || number < 0 || number > 1000) {
+        var amount = parseInt(numberInput.value);
+        var sorter = sortingInput.options[sortingInput.selectedIndex].value;
+        if (isNaN(amount) || amount < 0 || amount > 1000) {
             alert('The given number is invalid!\nRange allowed: 0 <= number <= 1000');
             return false;
         }
-        fetchData(number);
+        fetchData(amount, sorter);
         return false;
     }
 
-    function fetchData(amount) {
+    function fetchData(amount, sorter) {
         if (typeof(amount) !== "number")
             throw new TypeError('Type of parameter \'number\' must be \'number\'');
         var url = 'http://www.filltext.com/?rows=' + amount.toString() +
@@ -38,13 +41,13 @@
             '&email={email}' +
             '&phone={phone|format}';
         var request = new XMLHttpRequest();
-        request.onreadystatechange = function (event) { handleRequest(event.target); };
+        request.onreadystatechange = function (event) { handleRequest(event.target, sorter); };
         request.open('GET', url, true);
         request.send();
         console.log('HTTP-GET-request sent to:\n' + url);
     }
 
-    function handleRequest(req) {
+    function handleRequest(req, sorter) {
         if (req.readyState !== 4)
             return;
         if (req.status !== 200) {
@@ -54,7 +57,7 @@
         console.log('HTTP-GET-request successful.');
         console.log('Parsing...');
         try {
-            parseResponse(req.responseText);
+            parseResponse(req.responseText, sorter);
             console.log('HTTP-response parsed successfully.');
         }
         catch (err) {
@@ -64,12 +67,12 @@
         }
     }
 
-    function parseResponse(strResp) {
+    function parseResponse(strResp, sorter) {
         var parsedResp = JSON.parse(strResp);
         Array.prototype.sort.call(parsedResp, function (left, right) {
-            if (left.lastName > right.lastName)
+            if (left[sorter] > right[sorter])
                 return 1;
-            if (left.lastName < right.lastName)
+            if (left[sorter] < right[sorter])
                 return -1;
             return 0;
         });

@@ -38,16 +38,29 @@ header {
 
 #head-form label {
     float: left;
-    width: 400px;
     margin-right: 10px;
     padding: 0;
     line-height: 36px;
     text-align: right;
 }
 
-#head-form input[type="number"] {
+#head-form label[for='inpAmount'] {
+    width: 400px;
+}
+
+#inpAmount {
     float: left;
     width: 85px;
+    margin-right: 10px;
+}
+
+#head-form label[for='selSorting'] {
+    width: 90px;
+}
+
+#selSorting {
+    float: left;
+    width: 130px;
 }
 
 #head-form input[type="submit"] {
