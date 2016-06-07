@@ -13,7 +13,7 @@
             '&city={city}' +
             '&address={streetAddress}' +
             '&email={email}' +
-            '&phone={phone}';
+            '&phone={phone|format}';
         var request = new XMLHttpRequest();
         request.onreadystatechange = function (event) { handleRequest(event.target); };
         request.open('GET', url, true);
@@ -32,18 +32,19 @@
         console.log('Parsing...');
         try {
             parseResponse(req.responseText);
+            console.log('HTTP-response parsed successfully.');
         }
         catch (err) {
             console.log('An error occurred while parsing HTTP-response:\n' +
-                (!!err.stack ? err.stack : err.toString()));
+                ((!!err.stack && !!err.message) ?
+                    (err.message + '\n' + err.stack) : err.toString()));
         }
-        console.log('HTTP-response parsed successfully.')
     }
 
     function parseResponse(strResp) {
         var parsedResp = JSON.parse(strResp);
-        Array.prototype.forEach.call(parsedResp, function (obj, ind, arr) {
-            document.querySelector('body').appendChild(createCard(
+        Array.prototype.forEach.call(parsedResp, function (obj) {
+            document.querySelector('#card-area').appendChild(createCard(
                 obj.firstName,
                 obj.lastName,
                 obj.city,
