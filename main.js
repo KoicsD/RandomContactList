@@ -2,8 +2,31 @@
  * Created by KoicsD on 2016.06.06..
  */
 (function (app) {
-    window.addEventListener('load', function (event) { fetchData(3); });
-    
+    window.addEventListener('load', onLoad);
+    app.fetchData = fetchData;
+
+    var headForm;
+    var numberInput;
+    var submitButton;
+
+    function onLoad(event) {
+        headForm = document.querySelector('#head-form');
+        numberInput = document.querySelector('#head-form input[type="number"]');
+        submitButton = document.querySelector('#head-form input[type="submit"]');
+        headForm.addEventListener('submit', onSubmit);
+        onSubmit(event);
+    }
+
+    function onSubmit(event) {
+        var number = parseInt(numberInput.value);
+        if (isNaN(number) || number < 0 || number > 1000) {
+            alert('The given number is invalid!\nRange allowed: 0 <= number <= 1000');
+            return false;
+        }
+        fetchData(number);
+        return false;
+    }
+
     function fetchData(amount) {
         if (typeof(amount) !== "number")
             throw new TypeError('Type of parameter \'number\' must be \'number\'');
@@ -43,8 +66,9 @@
 
     function parseResponse(strResp) {
         var parsedResp = JSON.parse(strResp);
+        var cards = document.createElement('section');
         Array.prototype.forEach.call(parsedResp, function (obj) {
-            document.querySelector('#card-area').appendChild(createCard(
+            cards.appendChild(createCard(
                 obj.firstName,
                 obj.lastName,
                 obj.city,
@@ -53,6 +77,7 @@
                 obj.phone
             ));
         });
+        document.querySelector('#card-area').innerHTML = cards.innerHTML;
     }
     
     function createCard(firstName, lastName, city, address, email, phone) {

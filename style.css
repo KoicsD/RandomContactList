@@ -11,8 +11,15 @@ html {
     background-size: cover;
 }
 
-#header {
+header {
     margin: 0 auto;
+    width: 940px;
+    height: 46px;
+    padding: 0;
+}
+
+#head-form {
+    margin: 0;
     width: 940px;
     height: 46px;
     border-radius: 5px;
@@ -22,14 +29,14 @@ html {
     box-shadow: 2px 4px 2px rgba(0, 0, 0, 0.2);
 }
 
-#header * {
+#head-form * {
     height: 36px;
     margin: 0;
     padding: 0 10px;
     font: 18px Arial;
 }
 
-#header label {
+#head-form label {
     float: left;
     width: 400px;
     margin-right: 10px;
@@ -38,11 +45,11 @@ html {
     text-align: right;
 }
 
-#header input[type="number"] {
+#head-form input[type="number"] {
     float: left;
 }
 
-#header input[type="button"] {
+#head-form input[type="submit"] {
     float: right;
 }
 
