@@ -66,6 +66,13 @@
 
     function parseResponse(strResp) {
         var parsedResp = JSON.parse(strResp);
+        Array.prototype.sort.call(parsedResp, function (left, right) {
+            if (left.lastName > right.lastName)
+                return 1;
+            if (left.lastName < right.lastName)
+                return -1;
+            return 0;
+        });
         var cards = document.createElement('section');
         Array.prototype.forEach.call(parsedResp, function (obj) {
             cards.appendChild(createCard(
