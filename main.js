@@ -7,7 +7,7 @@
     function fetchData(amount) {
         if (typeof(amount) !== "number")
             throw new TypeError('Type of parameter \'number\' must be \'number\'');
-        var url = 'www.filltext.com/?rows=' + amount.toString() +
+        var url = 'http://www.filltext.com/?rows=' + amount.toString() +
             '&firstName={firstName}' +
             '&lastName={lastName}' +
             '&city={city}' +
