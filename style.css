@@ -11,6 +11,41 @@ html {
     background-size: cover;
 }
 
+#header {
+    margin: 0 auto;
+    width: 940px;
+    height: 46px;
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 5px;
+    background: lightgrey;
+    box-shadow: 2px 4px 2px rgba(0, 0, 0, 0.2);
+}
+
+#header * {
+    height: 36px;
+    margin: 0;
+    padding: 0 10px;
+    font: 18px Arial;
+}
+
+#header label {
+    float: left;
+    width: 400px;
+    margin-right: 10px;
+    padding: 0;
+    line-height: 36px;
+    text-align: right;
+}
+
+#header input[type="number"] {
+    float: left;
+}
+
+#header input[type="button"] {
+    float: right;
+}
+
 #card-area {
     margin: 0 auto;
     width: 960px;
