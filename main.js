@@ -26,13 +26,30 @@
             alert('The given number is invalid!\nRange allowed: 0 <= number <= 1000');
             return false;
         }
-        fetchData(amount, sorter);
+        try {
+            fetchData(amount, sorter);
+        }
+        catch (err) {
+            console.log('Error while handling submit-event:\n' +
+                ((!!err.stack && !!err.message) ?
+                    (err.message + '\n' + err.stack) : err.toString()));
+            alert(':( Sorry, an error occurred while handling submit-event. See console.');
+        }
         return false;
     }
+
+    var fields = ['firstName', 'lastName', 'city', 'address', 'email', 'phone'];
 
     function fetchData(amount, sorter) {
         if (typeof(amount) !== "number")
             throw new TypeError('Type of parameter \'number\' must be \'number\'');
+        if (typeof(sorter) !== "string")
+            throw new TypeError('Type of parameter \'sorter\' must be \'string\'');
+        if (amount < 0 || amount > 1000)
+            throw new RangeError('Value of parameter \'number\' must be between 0 and 1000, both inclusive.');
+        if (fields.indexOf(sorter) === -1)
+            throw new RangeError('Possible values of parameter \'sorter\' are: '
+                + '\'' + fields.join('\', \'') + '\'');
         var url = 'http://www.filltext.com/?rows=' + amount.toString() +
             '&firstName={firstName}' +
             '&lastName={lastName}' +
@@ -69,6 +86,13 @@
 
     function parseResponse(strResp, sorter) {
         var parsedResp = JSON.parse(strResp);
+        Array.prototype.forEach.call(parsedResp, function (obj) {
+            if (!fields.every(function (f, i, a) {
+                    return obj.hasOwnProperty(f);
+                })) {
+                throw new ReferenceError('Not all objects contains all the necessary fields.');
+            }
+        });
         Array.prototype.sort.call(parsedResp, function (left, right) {
             if (left[sorter] > right[sorter])
                 return 1;
